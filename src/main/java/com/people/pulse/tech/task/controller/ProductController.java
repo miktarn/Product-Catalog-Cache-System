@@ -3,6 +3,9 @@ package com.people.pulse.tech.task.controller;
 import com.people.pulse.tech.task.model.Product;
 import com.people.pulse.tech.task.model.dto.ProductRequestDto;
 import com.people.pulse.tech.task.service.ProductService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -29,28 +32,29 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public Product getById(@PathVariable Long id) {
+    public Product getById(@PathVariable @Positive Long id) {
         return productService.getById(id);
     }
 
     @PostMapping
-    public Product create(@RequestBody ProductRequestDto requestDto) {
+    public Product create(@RequestBody @Valid ProductRequestDto requestDto) {
         return productService.create(requestDto);
     }
 
     @PutMapping("/{id}")
-    public Product update(@PathVariable Long id, @RequestBody ProductRequestDto requestDto) {
+    public Product update(@PathVariable @Positive Long id,
+                          @RequestBody @Valid ProductRequestDto requestDto) {
         return productService.update(id, requestDto);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Long id) {
+    public void delete(@PathVariable @Positive Long id) {
         productService.deleteById(id);
     }
 
     @GetMapping("/category/{category}")
-    public List<Product> getAllByCategory(@PathVariable String category) {
+    public List<Product> getAllByCategory(@PathVariable @NotBlank String category) {
         return productService.getAllByCategory(category);
     }
 }
