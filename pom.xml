@@ -41,6 +41,10 @@
 			<artifactId>hibernate-validator</artifactId>
 			<version>${hibernate-validator.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-core</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>com.h2database</groupId>
@@ -54,6 +58,7 @@
 		</dependency>
 
 	</dependencies>
+
 
 	<build>
 		<plugins>
