@@ -2,12 +2,16 @@ package com.people.pulse.tech.task.controller;
 
 import com.people.pulse.tech.task.model.Product;
 import com.people.pulse.tech.task.model.dto.ProductRequestDto;
+import com.people.pulse.tech.task.model.dto.ProductResponseDto;
+import com.people.pulse.tech.task.model.dto.mapper.ProductMapper;
 import com.people.pulse.tech.task.service.ProductService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 import java.util.List;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,26 +30,37 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProductController {
 
     private ProductService productService;
+    private ProductMapper mapper;
 
     @GetMapping
-    public List<Product> listAllProducts() {
-        return productService.listAllProducts();
+    public List<ProductResponseDto> findAll(
+            @RequestParam(defaultValue = "20") @Positive Integer count,
+            @RequestParam(defaultValue = "0") @PositiveOrZero Integer page) {
+        PageRequest pageRequest = PageRequest.of(page, count);
+        return productService.findAll(pageRequest).stream()
+                .map(mapper::toResponseDto)
+                .toList();
     }
 
     @GetMapping("/{id}")
-    public Product getById(@PathVariable @Positive Long id) {
-        return productService.getById(id);
+    public ProductResponseDto getById(@PathVariable @Positive Long id) {
+        return mapper.toResponseDto(productService.getById(id));
+
     }
 
     @PostMapping
-    public Product create(@RequestBody @Valid ProductRequestDto requestDto) {
-        return productService.create(requestDto);
+    @ResponseStatus(HttpStatus.CREATED)
+    public ProductResponseDto create(@RequestBody @Valid ProductRequestDto requestDto) {
+        Product created = productService.create(mapper.toModel(requestDto));
+        return mapper.toResponseDto(created);
     }
 
     @PutMapping("/{id}")
-    public Product update(@PathVariable @Positive Long id,
-                          @RequestBody @Valid ProductRequestDto requestDto) {
-        return productService.update(id, requestDto);
+    public ProductResponseDto update(@PathVariable @Positive Long id,
+                                     @RequestBody @Valid ProductRequestDto requestDto) {
+        Product product = mapper.toModel(requestDto);
+        product.setId(id);
+        return mapper.toResponseDto(productService.update(product));
     }
 
     @DeleteMapping("/{id}")

@@ -7,23 +7,22 @@ import com.people.pulse.tech.task.repository.ProductRepository;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
 public class ProductServiceImpl implements ProductService {
     private ProductRepository productRepository;
-    private ProductMapper productMapper;
 
     @Override
-    public List<Product> listAllProducts() {
-        return productRepository.findAll();
+    public List<Product> findAll(PageRequest pageRequest) {
+        return productRepository.findAll(pageRequest).toList();
     }
 
     @Override
-    public Product create(ProductRequestDto requestDto) {
-        Product product = productMapper.toModel(requestDto);
-        return productRepository.save(product);
+    public Product create(Product newProduct) {
+        return productRepository.save(newProduct);
     }
 
     @Override
@@ -33,12 +32,10 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product update(Long id, ProductRequestDto requestDto) {
-        if (!productRepository.existsById(id)) {
-            throw new EntityNotFoundException("Not found product with id:" + id);
+    public Product update(Product product) {
+        if (!productRepository.existsById(product.getId())) {
+            throw new EntityNotFoundException("Not found product with id:" + product.getId());
         }
-        Product product = productMapper.toModel(requestDto);
-        product.setId(id);
         return productRepository.save(product);
     }
 
