@@ -19,6 +19,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Product {
+    public static final String CACHE_NAME = "products";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

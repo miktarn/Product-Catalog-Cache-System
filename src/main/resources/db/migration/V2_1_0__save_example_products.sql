@@ -1,4 +1,5 @@
-INSERT INTO products (name, description, price, category, stock, created_date, last_updated_date) VALUES
+INSERT INTO products (name, description, price, category, stock, created_date, last_updated_date)
+VALUES
 -- food items
 ('Apple', 'Fresh and juicy red apple.', 0.99, 'food', 100, NOW(), NOW()),
 ('Bread', 'Whole grain bread.', 1.49, 'food', 50, NOW(), NOW()),

@@ -9,11 +9,15 @@ import lombok.Data;
 
 @Data
 public class ProductRequestDto {
-    @NotNull private String name;
+    @NotNull
+    private String name;
     private String description;
-    @NotNull @Positive private BigDecimal price;
+    @NotNull
+    @Positive
+    private BigDecimal price;
     private String category;
-    @PositiveOrZero private Integer stock;
+    @PositiveOrZero
+    private Integer stock;
     private LocalDateTime createdDate;
     private LocalDateTime lastUpdatedDate;
 }

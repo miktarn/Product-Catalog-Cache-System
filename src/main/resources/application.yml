@@ -12,3 +12,6 @@ spring:
     enabled: true
   flyway:
     baseline-on-migrate: true
+caching:
+  spring:
+    products-ttl-ms: 10000
