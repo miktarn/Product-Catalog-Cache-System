@@ -2,16 +2,13 @@ spring:
   datasource:
     url: jdbc:h2:mem:stockdb
     driverClassName: org.h2.Driver
-    username: sa
+    username: username
     password: password
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate.ddl-auto: validate
-  h2:
-    console:
-    enabled: true
   flyway:
     baseline-on-migrate: true
 caching:
   spring:
-    products-ttl-ms: 10000
+    products-ttl-ms: 600000 #10 minutes
