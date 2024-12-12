@@ -34,6 +34,9 @@ This Spring Boot application provides a RESTful web service for managing a produ
    - Validation Errors: returning a `BAD_REQUEST` status with a detailed list of validation issues and a timestamp.
    - Entity Not Found: returning a `NOT_FOUND` status and an appropriate error message.
 
+5. **Tests**
+   - International tests for controller and validation
+   - Test coverage 90%
 ---
 ## API Endpoints
 
