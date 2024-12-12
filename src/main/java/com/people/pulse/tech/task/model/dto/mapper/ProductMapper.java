@@ -3,12 +3,9 @@ package com.people.pulse.tech.task.model.dto.mapper;
 import com.people.pulse.tech.task.model.Product;
 import com.people.pulse.tech.task.model.dto.ProductRequestDto;
 import com.people.pulse.tech.task.model.dto.ProductResponseDto;
-import org.springframework.stereotype.Component;
 
-@Component
 public class ProductMapper {
-
-    public Product toModel(ProductRequestDto dto) {
+    public static Product toModel(ProductRequestDto dto) {
         return Product.builder()
                 .name(dto.getName())
                 .description(dto.getDescription())
@@ -20,7 +17,7 @@ public class ProductMapper {
                 .build();
     }
 
-    public ProductResponseDto toResponseDto(Product model) {
+    public static ProductResponseDto toResponseDto(Product model) {
         return ProductResponseDto.builder()
                 .id(model.getId())
                 .name(model.getName())

@@ -1,5 +1,8 @@
 package com.people.pulse.tech.task.controller;
 
+import static com.people.pulse.tech.task.model.dto.mapper.ProductMapper.toModel;
+import static com.people.pulse.tech.task.model.dto.mapper.ProductMapper.toResponseDto;
+
 import com.people.pulse.tech.task.model.Product;
 import com.people.pulse.tech.task.model.dto.ProductRequestDto;
 import com.people.pulse.tech.task.model.dto.ProductResponseDto;
@@ -30,7 +33,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProductController {
 
     private ProductService productService;
-    private ProductMapper mapper;
 
     @GetMapping
     public List<ProductResponseDto> findAll(
@@ -38,29 +40,29 @@ public class ProductController {
             @RequestParam(defaultValue = "0") @PositiveOrZero Integer page) {
         PageRequest pageRequest = PageRequest.of(page, count);
         return productService.findAll(pageRequest).stream()
-                .map(mapper::toResponseDto)
+                .map(ProductMapper::toResponseDto)
                 .toList();
     }
 
     @GetMapping("/{id}")
     public ProductResponseDto getById(@PathVariable @Positive Long id) {
-        return mapper.toResponseDto(productService.getById(id));
+        return toResponseDto(productService.getById(id));
 
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ProductResponseDto create(@RequestBody @Valid ProductRequestDto requestDto) {
-        Product created = productService.create(mapper.toModel(requestDto));
-        return mapper.toResponseDto(created);
+        Product created = productService.create(toModel(requestDto));
+        return toResponseDto(created);
     }
 
     @PutMapping("/{id}")
     public ProductResponseDto update(@PathVariable @Positive Long id,
                                      @RequestBody @Valid ProductRequestDto requestDto) {
-        Product product = mapper.toModel(requestDto);
+        Product product = toModel(requestDto);
         product.setId(id);
-        return mapper.toResponseDto(productService.update(product));
+        return toResponseDto(productService.update(product));
     }
 
     @DeleteMapping("/{id}")

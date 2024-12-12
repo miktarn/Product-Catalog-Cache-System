@@ -54,11 +54,6 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Cacheable
     public List<Product> getAllByCategory(String category) {
-        try {
-            Thread.sleep(3_000L);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
         return productRepository.getProductsByCategory(category);
     }
 }
